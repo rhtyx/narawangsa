@@ -11,4 +11,7 @@ migrate-create:
 migrate-up:
 	migrate -path db/migration -database "postgresql://narawangsa:narawangsa@localhost:5434/narawangsa_db?sslmode=disable" up
 
+migrate-down:
+	migrate -path db/migration -database "postgresql://narawangsa:narawangsa@localhost:5434/narawangsa_db?sslmode=disable" down
+
 .PHONY: commit
