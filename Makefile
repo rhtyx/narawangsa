@@ -8,4 +8,7 @@ push:
 migrate-create:
 	migrate create -ext sql -dir db/migration -seq ${name}
 
+migrate-up:
+	migrate -path db/migration -database "postgresql://narawangsa:narawangsa@localhost:5434/narawangsa_db?sslmode=disable" up
+
 .PHONY: commit
