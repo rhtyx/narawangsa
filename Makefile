@@ -11,6 +11,9 @@ postgres:
 createdb:
 	docker exec -it postgres14_narawangsa createdb --username=narawangsa --owner=narawangsa narawangsa_db
 
+dropdb:
+	docker exec -it postgres14_narawangsa dropdb narawangsa_db
+
 migrate-create:
 	migrate create -ext sql -dir db/migration -seq ${name}
 
