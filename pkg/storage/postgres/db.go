@@ -12,17 +12,11 @@ type Queries interface {
 	QueryRowContext(context.Context, string, ...interface{}) *sql.Row
 }
 
-type Transaction interface {
-	Rollback() error
-	Commit() error
-}
-
 type TrxOpener interface {
 	BeginTx(context.Context, *sql.TxOptions) (*sql.Tx, error)
 }
 
 type PostgreSQL interface {
 	Queries
-	Transaction
 	TrxOpener
 }
