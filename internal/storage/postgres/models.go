@@ -22,3 +22,14 @@ type Book struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+type BookList struct {
+	ID        int64     `json:"id"`
+	UserID    int64     `json:"user_id"`
+	BookID    int64     `json:"book_id"`
+	IsRead    bool      `json:"is_read"`
+	PagesRead int32     `json:"pages_read"`
+	EndDate   time.Time `json:"end_date"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
