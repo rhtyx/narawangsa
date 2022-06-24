@@ -5,7 +5,7 @@ import (
 	"database/sql"
 )
 
-type Queries interface {
+type IQueries interface {
 	ExecContext(context.Context, string, ...interface{}) (sql.Result, error)
 	PrepareContext(context.Context, string) (*sql.Stmt, error)
 	QueryContext(context.Context, string, ...interface{}) (*sql.Rows, error)
@@ -17,6 +17,14 @@ type TrxOpener interface {
 }
 
 type PostgreSQL interface {
-	Queries
+	IQueries
 	TrxOpener
+}
+
+func NewQueries(db IQueries) *Queries {
+	return &Queries{db: db}
+}
+
+type Queries struct {
+	db IQueries
 }

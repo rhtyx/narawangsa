@@ -36,7 +36,7 @@ func (t *txInContext) Run(ctx context.Context, fn func(ctx context.Context) erro
 	return tx.Commit()
 }
 
-func newQueryCtx(ctx context.Context, q Queries) context.Context {
+func newQueryCtx(ctx context.Context, q IQueries) context.Context {
 	return context.WithValue(ctx, key, q)
 }
 
