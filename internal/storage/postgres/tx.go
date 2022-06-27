@@ -8,17 +8,17 @@ import (
 
 var key int = 0
 
-type txInContext struct {
+type TxInContext struct {
 	db PostgreSQL
 }
 
-func NewTxInContext(db *sql.DB) *txInContext {
-	return &txInContext{
+func NewTxInContext(db *sql.DB) *TxInContext {
+	return &TxInContext{
 		db: db,
 	}
 }
 
-func (t *txInContext) Run(ctx context.Context, fn func(ctx context.Context) error) error {
+func (t *TxInContext) Run(ctx context.Context, fn func(ctx context.Context) error) error {
 	tx, err := t.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("error when creating transaction: %v", err)
