@@ -40,8 +40,8 @@ func newQueryCtx(ctx context.Context, q IQueries) context.Context {
 	return context.WithValue(ctx, key, q)
 }
 
-func GetQueryCtx(ctx context.Context) (Queries, bool) {
-	q, ok := ctx.Value(key).(Queries)
+func GetQueryCtx(ctx context.Context) (IQueries, bool) {
+	q, ok := ctx.Value(key).(IQueries)
 
 	return q, ok
 }

@@ -6,42 +6,90 @@ import (
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 )
 
-type Service struct {
+type userStorage interface {
+	CreateUser(ctx context.Context, arg postgres.CreateUserParams) error
+	DeleteUser(ctx context.Context, username string) error
+	GetUser(ctx context.Context, username string) (postgres.User, error)
+	UpdatePasswordUser(ctx context.Context, arg postgres.UpdatePasswordUserParams) error
+	UpdateUser(ctx context.Context, arg postgres.UpdateUserParams) (postgres.UpdateUserRow, error)
+}
+
+type service struct {
 	repository IUsers
+	tx         postgres.TxInContext
 }
 
-func NewUserService(repository IUsers) *Service {
-	return &Service{
+func NewUserService(repository IUsers, tx postgres.TxInContext) userStorage {
+	return &service{
 		repository: repository,
+		tx:         tx,
 	}
 }
 
-func (s *Service) CreateUser(ctx context.Context, arg postgres.CreateUserParams) error {
-	userId, err := s.repository.CreateUser(ctx, arg)
+func (s *service) CreateUser(ctx context.Context, arg postgres.CreateUserParams) error {
+	err := s.tx.Run(ctx, func(ctx context.Context) error {
+		userId, err := s.repository.CreateUser(ctx, arg)
+		if err != nil {
+			return err
+		}
+
+		err = s.repository.CreateUserLevel(ctx, userId)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
 	if err != nil {
 		return err
 	}
-
-	err = s.repository.CreateUserLevel(ctx, userId)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
-func (s *Service) DeleteUser(ctx context.Context, username string) error {
-	return s.repository.DeleteUser(ctx, username)
+func (s *service) DeleteUser(ctx context.Context, username string) error {
+	err := s.tx.Run(ctx, func(ctx context.Context) error {
+		err := s.repository.DeleteUser(ctx, username)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	return err
 }
 
-func (s *Service) GetUser(ctx context.Context, username string) (postgres.User, error) {
-	return s.repository.GetUser(ctx, username)
+func (s *service) GetUser(ctx context.Context, username string) (postgres.User, error) {
+	var user postgres.User
+	err := s.tx.Run(ctx, func(ctx context.Context) error {
+		u, err := s.repository.GetUser(ctx, username)
+		if err != nil {
+			return err
+		}
+		user = u
+		return nil
+	})
+	return user, err
 }
 
-func (s *Service) UpdatePasswordUser(ctx context.Context, arg postgres.UpdatePasswordUserParams) error {
-	return s.repository.UpdatePasswordUser(ctx, arg)
+func (s *service) UpdatePasswordUser(ctx context.Context, arg postgres.UpdatePasswordUserParams) error {
+	err := s.tx.Run(ctx, func(ctx context.Context) error {
+		err := s.repository.UpdatePasswordUser(ctx, arg)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	return err
 }
 
-func (s *Service) UpdateUser(ctx context.Context, arg postgres.UpdateUserParams) (postgres.UpdateUserRow, error) {
-	return s.repository.UpdateUser(ctx, arg)
+func (s *service) UpdateUser(ctx context.Context, arg postgres.UpdateUserParams) (postgres.UpdateUserRow, error) {
+	var updatedUser postgres.UpdateUserRow
+	err := s.tx.Run(ctx, func(ctx context.Context) error {
+		uu, err := s.repository.UpdateUser(ctx, arg)
+		if err != nil {
+			return err
+		}
+		updatedUser = uu
+		return nil
+	})
+	return updatedUser, err
 }
