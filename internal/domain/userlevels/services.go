@@ -38,11 +38,7 @@ func (s *service) GetUserLevel(ctx context.Context, userID int64) (postgres.GetU
 
 func (s *service) UpdateUserLevelsLevel(ctx context.Context, arg postgres.UpdateUserLevelsLevelParams) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
-		err := s.repository.UpdateUserLevelsLevel(ctx, arg)
-		if err != nil {
-			return err
-		}
-		return err
+		return s.repository.UpdateUserLevelsLevel(ctx, arg)
 	})
 	return err
 }
