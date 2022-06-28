@@ -58,7 +58,7 @@ func (q *Queries) GetUser(ctx context.Context, username string) (User, error) {
 		&i.Name,
 		&i.Username,
 		&i.Email,
-		&i.Password,
+		&i.HashedPassword,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -73,14 +73,15 @@ WHERE "username" = $3
 `
 
 type UpdatePasswordUserParams struct {
-	Password  string    `json:"password"`
-	UpdatedAt time.Time `json:"updated_at"`
-	Username  string    `json:"username"`
+	OldPassword string    `json:"old_password"`
+	NewPassword string    `json:"new_password"`
+	UpdatedAt   time.Time `json:"updated_at"`
+	Username    string    `json:"username"`
 }
 
 func (q *Queries) UpdatePasswordUser(ctx context.Context, arg UpdatePasswordUserParams) error {
 	query := q.getQueries(ctx)
-	_, err := query.ExecContext(ctx, updatePasswordUser, arg.Password, arg.UpdatedAt, arg.Username)
+	_, err := query.ExecContext(ctx, updatePasswordUser, arg.NewPassword, arg.UpdatedAt, arg.Username)
 	return err
 }
 

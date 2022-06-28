@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/rhtyx/narawangsa/lib"
 	"github.com/stretchr/testify/require"
 )
 
@@ -17,9 +18,10 @@ var argUser = CreateUserParams{
 }
 
 var argUserPassword = UpdatePasswordUserParams{
-	Password:  "tony321",
-	UpdatedAt: time.Now(),
-	Username:  "tony",
+	OldPassword: "tony123",
+	NewPassword: "tony321",
+	UpdatedAt:   time.Now(),
+	Username:    "tony",
 }
 
 var argUpdateUser = UpdateUserParams{
@@ -42,6 +44,7 @@ func getUserF() User {
 }
 
 func TestCreateUser(t *testing.T) {
+	argUser.Password, _ = lib.HashPassword(argUser.Password)
 	id, err := testQueries.CreateUser(context.Background(), argUser)
 	require.NoError(t, err)
 
@@ -56,10 +59,14 @@ func TestGetUser(t *testing.T) {
 	require.Equal(t, argUser.Name, user.Name)
 	require.Equal(t, argUser.Username, user.Username)
 	require.Equal(t, argUser.Email, user.Email)
+	require.NoError(t, lib.CheckPassword(argUser.Password, user.HashedPassword))
 }
 
 func TestUpdatePasswordUser(t *testing.T) {
-	err := testQueries.UpdatePasswordUser(context.Background(), argUserPassword)
+	user, _ := testQueries.GetUser(context.Background(), argUser.Username)
+	err := lib.CheckPassword(argUserPassword.OldPassword, user.HashedPassword)
+	require.NoError(t, err)
+	err = testQueries.UpdatePasswordUser(context.Background(), argUserPassword)
 	require.NoError(t, err)
 }
 
