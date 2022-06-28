@@ -41,8 +41,11 @@ func (s *service) ListBookList(ctx context.Context, userID int64) ([]postgres.Bo
 	var booklists []postgres.BookList
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
 		bl, err := s.repository.ListBookList(ctx, userID)
+		if err != nil {
+			return err
+		}
 		booklists = bl
-		return err
+		return nil
 	})
 	return booklists, err
 }
