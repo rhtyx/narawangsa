@@ -12,11 +12,11 @@ type categoryBooksStorage interface {
 }
 
 type service struct {
-	repository ICategoryBooks
+	repository categoryBooksStorage
 	tx         postgres.TxInContext
 }
 
-func NewCategoryBooksService(repository ICategoryBooks, tx postgres.TxInContext) categoryBooksStorage {
+func NewCategoryBooksService(repository categoryBooksStorage, tx postgres.TxInContext) ICategoryBooks {
 	return &service{
 		repository: repository,
 		tx:         tx,

@@ -12,11 +12,11 @@ type userLevelsStorage interface {
 }
 
 type service struct {
-	repository IUserLevels
+	repository userLevelsStorage
 	tx         postgres.TxInContext
 }
 
-func NewUserLevelsService(repository IUserLevels, tx postgres.TxInContext) userLevelsStorage {
+func NewUserLevelsService(repository userLevelsStorage, tx postgres.TxInContext) IUserLevels {
 	return &service{
 		repository: repository,
 		tx:         tx,

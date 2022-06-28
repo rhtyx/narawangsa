@@ -15,11 +15,11 @@ type booksStorage interface {
 }
 
 type service struct {
-	repository IBooks
+	repository booksStorage
 	tx         postgres.TxInContext
 }
 
-func NewBooksService(repository IBooks, tx postgres.TxInContext) booksStorage {
+func NewBooksService(repository booksStorage, tx postgres.TxInContext) IBooks {
 	return &service{
 		repository: repository,
 		tx:         tx,
