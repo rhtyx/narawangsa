@@ -39,20 +39,12 @@ func (s *service) CreateUser(ctx context.Context, arg postgres.CreateUserParams)
 		}
 		return nil
 	})
-
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func (s *service) DeleteUser(ctx context.Context, username string) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
-		err := s.repository.DeleteUser(ctx, username)
-		if err != nil {
-			return err
-		}
-		return nil
+		return s.repository.DeleteUser(ctx, username)
 	})
 	return err
 }
@@ -72,11 +64,7 @@ func (s *service) GetUser(ctx context.Context, username string) (postgres.User, 
 
 func (s *service) UpdatePasswordUser(ctx context.Context, arg postgres.UpdatePasswordUserParams) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
-		err := s.repository.UpdatePasswordUser(ctx, arg)
-		if err != nil {
-			return err
-		}
-		return nil
+		return s.repository.UpdatePasswordUser(ctx, arg)
 	})
 	return err
 }
