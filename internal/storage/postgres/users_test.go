@@ -59,7 +59,7 @@ func TestGetUser(t *testing.T) {
 	require.Equal(t, argUser.Name, user.Name)
 	require.Equal(t, argUser.Username, user.Username)
 	require.Equal(t, argUser.Email, user.Email)
-	require.NoError(t, lib.CheckPassword(argUser.Password, user.HashedPassword))
+	require.NoError(t, lib.CheckPassword(argUserPassword.OldPassword, user.HashedPassword))
 }
 
 func TestUpdatePasswordUser(t *testing.T) {
