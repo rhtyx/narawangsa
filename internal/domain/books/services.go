@@ -28,21 +28,13 @@ func NewBooksService(repository IBooks, tx postgres.TxInContext) booksStorage {
 
 func (s *service) CreateBook(ctx context.Context, arg postgres.CreateBookParams) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
-		err := s.repository.CreateBook(ctx, arg)
-		if err != nil {
-			return err
-		}
-		return nil
+		return s.repository.CreateBook(ctx, arg)
 	})
 	return err
 }
 func (s *service) DeleteBook(ctx context.Context, id int64) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
-		err := s.repository.DeleteBook(ctx, id)
-		if err != nil {
-			return err
-		}
-		return nil
+		return s.repository.DeleteBook(ctx, id)
 	})
 	return err
 }
@@ -72,11 +64,7 @@ func (s *service) ListBooks(ctx context.Context, limit int32) ([]postgres.Book, 
 }
 func (s *service) UpdateBook(ctx context.Context, arg postgres.UpdateBookParams) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
-		err := s.repository.UpdateBook(ctx, arg)
-		if err != nil {
-			return err
-		}
-		return nil
+		return s.repository.UpdateBook(ctx, arg)
 	})
 	return err
 }
