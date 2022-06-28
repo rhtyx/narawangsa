@@ -7,7 +7,7 @@ import (
 )
 
 type IBooks interface {
-	CreateBook(ctx context.Context, arg postgres.CreateBookParams) (int64, error)
+	CreateBook(ctx context.Context, arg postgres.CreateBookParams) error
 	DeleteBook(ctx context.Context, id int64) error
 	GetBook(ctx context.Context, title string) (postgres.Book, error)
 	ListBooks(ctx context.Context, limit int32) ([]postgres.Book, error)
