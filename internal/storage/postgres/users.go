@@ -5,12 +5,12 @@ import (
 	"time"
 )
 
-const createUser = `-- name: CreateUser :one
+const createUser = `-- name: CreateUser :exec
 INSERT INTO "users" (
   "name", "username", "email", "password"
 ) VALUES (
   $1, $2, $3, $4
-) RETURNING "id"
+)
 `
 
 type CreateUserParams struct {
@@ -20,17 +20,15 @@ type CreateUserParams struct {
 	Password string `json:"password"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (int64, error) {
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) error {
 	query := q.getQueries(ctx)
-	row := query.QueryRowContext(ctx, createUser,
+	_, err := query.ExecContext(ctx, createUser,
 		arg.Name,
 		arg.Username,
 		arg.Email,
 		arg.Password,
 	)
-	var id int64
-	err := row.Scan(&id)
-	return id, err
+	return err
 }
 
 const deleteUser = `-- name: DeleteUser :exec

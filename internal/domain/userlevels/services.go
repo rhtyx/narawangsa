@@ -9,6 +9,7 @@ import (
 type userLevelsStorage interface {
 	GetUserLevel(ctx context.Context, userID int64) (postgres.GetUserLevelRow, error)
 	UpdateUserLevelsLevel(ctx context.Context, arg postgres.UpdateUserLevelsLevelParams) error
+	CreateUserLevel(ctx context.Context, userID int64) error
 }
 
 type service struct {
@@ -39,6 +40,13 @@ func (s *service) GetUserLevel(ctx context.Context, userID int64) (postgres.GetU
 func (s *service) UpdateUserLevelsLevel(ctx context.Context, arg postgres.UpdateUserLevelsLevelParams) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
 		return s.repository.UpdateUserLevelsLevel(ctx, arg)
+	})
+	return err
+}
+
+func (s *service) CreateUserLevel(ctx context.Context, userID int64) error {
+	err := s.tx.Run(ctx, func(ctx context.Context) error {
+		return s.repository.CreateUserLevel(ctx, userID)
 	})
 	return err
 }

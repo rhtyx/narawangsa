@@ -32,7 +32,7 @@ var argUpdateUser = UpdateUserParams{
 }
 
 func createUserF() {
-	_, err := testQueries.CreateUser(context.Background(), argUser)
+	err := testQueries.CreateUser(context.Background(), argUser)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -45,11 +45,8 @@ func getUserF() User {
 
 func TestCreateUser(t *testing.T) {
 	argUser.Password, _ = lib.HashPassword(argUser.Password)
-	id, err := testQueries.CreateUser(context.Background(), argUser)
+	err := testQueries.CreateUser(context.Background(), argUser)
 	require.NoError(t, err)
-
-	user, _ := testQueries.GetUser(context.Background(), argUser.Username)
-	require.Equal(t, user.ID, id)
 }
 
 func TestGetUser(t *testing.T) {
