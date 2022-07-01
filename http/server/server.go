@@ -15,6 +15,8 @@ func New(store storage.ExecTx) *server {
 	server := &server{store: store}
 	router := gin.Default()
 
+	base := base.NewHandler()
+
 	router.GET("/ping", base.Ping)
 	server.router = router
 	return server
