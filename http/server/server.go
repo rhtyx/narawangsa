@@ -19,3 +19,7 @@ func New(store storage.ExecTx) *server {
 	server.router = router
 	return server
 }
+
+func (s *server) Start(address string) error {
+	return s.router.Run(address)
+}
