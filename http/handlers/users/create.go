@@ -17,7 +17,7 @@ type createUserRequest struct {
 	Password string `json:"password" binding:"required,min=8"`
 }
 
-func Create(ctx *gin.Context, service users.IUsers) {
+func (h *handler) Create(ctx *gin.Context, service users.IUsers) {
 	var req createUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, lib.ErrorResponse(err))
