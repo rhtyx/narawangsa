@@ -26,4 +26,7 @@ migrate-down:
 test:
 	go test -v -cover ./...
 
-.PHONY: commit push postgres createdb dropdb migrate-create migrate-up migrate-down
+run:
+	go run cmd/narawangsa/main.go
+
+.PHONY: commit push postgres createdb dropdb migrate-create migrate-up migrate-down run
