@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
-	"github.com/rhtyx/narawangsa/internal/domain/users"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 	"github.com/rhtyx/narawangsa/lib"
 )
@@ -17,7 +16,7 @@ type createUserRequest struct {
 	Password string `json:"password" binding:"required,min=8"`
 }
 
-func (h *handler) Create(ctx *gin.Context, service users.IUsers) {
+func (h *handler) Create(ctx *gin.Context) {
 	var req createUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, lib.ErrorResponse(err))
@@ -37,7 +36,7 @@ func (h *handler) Create(ctx *gin.Context, service users.IUsers) {
 		Email:    req.Email,
 	}
 
-	err = service.CreateUser(ctx, arg)
+	err = h.service.CreateUser(ctx, arg)
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok {
 			switch pqErr.Code.Name() {
