@@ -9,17 +9,17 @@ import (
 )
 
 type deleteAccountRequest struct {
-	username string `uri:"username" binding:"required"`
+	Username string `uri:"username" binding:"required"`
 }
 
 func (h *handler) Delete(ctx *gin.Context) {
 	var req deleteAccountRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBindUri(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, lib.ErrorResponse(err))
 		return
 	}
 
-	err := h.service.DeleteUser(ctx, req.username)
+	err := h.service.DeleteUser(ctx, req.Username)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))
