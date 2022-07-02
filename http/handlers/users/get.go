@@ -14,7 +14,6 @@ type getUserRequest struct {
 }
 
 type userResponse struct {
-	ID        int64     `json:"id"`
 	Name      string    `json:"name"`
 	Username  string    `json:"username"`
 	Email     string    `json:"email"`
@@ -40,7 +39,6 @@ func (h *handler) Get(ctx *gin.Context) {
 	}
 
 	response := userResponse{
-		ID:        user.ID,
 		Username:  user.Username,
 		Email:     user.Email,
 		CreatedAt: user.CreatedAt,

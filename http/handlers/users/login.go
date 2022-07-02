@@ -44,7 +44,6 @@ func (h *handler) LoginUser(ctx *gin.Context) {
 	}
 
 	userResponse := userResponse{
-		ID:        user.ID,
 		Name:      user.Name,
 		Username:  user.Username,
 		Email:     user.Email,
