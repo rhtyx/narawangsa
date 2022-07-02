@@ -33,6 +33,7 @@ func (h *handler) Get(ctx *gin.Context) {
 	}
 
 	response := userResponse{
+		Name:      user.Name,
 		Username:  user.Username,
 		Email:     user.Email,
 		CreatedAt: user.CreatedAt,
