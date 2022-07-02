@@ -5,21 +5,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rhtyx/narawangsa/http/middleware"
+	"github.com/rhtyx/narawangsa/internal/token"
 	"github.com/rhtyx/narawangsa/lib"
 )
 
-type deleteAccountRequest struct {
-	Username string `uri:"username" binding:"required"`
-}
-
 func (h *handler) Delete(ctx *gin.Context) {
-	var req deleteAccountRequest
-	if err := ctx.ShouldBindUri(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, lib.ErrorResponse(err))
-		return
-	}
-
-	err := h.service.DeleteUser(ctx, req.Username)
+	authPayload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
+	err := h.service.DeleteUser(ctx, authPayload.Username)
 	if err != nil {
 		// TODO: Error if the row that has been deleted still return no error
 		if err == sql.ErrNoRows {
