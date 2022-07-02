@@ -6,12 +6,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rhtyx/narawangsa/http/middleware"
+	"github.com/rhtyx/narawangsa/internal/token"
 	"github.com/rhtyx/narawangsa/lib"
 )
-
-type getUserRequest struct {
-	Username string `uri:"username" binding:"required"`
-}
 
 type userResponse struct {
 	Name      string    `json:"name"`
@@ -22,13 +20,9 @@ type userResponse struct {
 }
 
 func (h *handler) Get(ctx *gin.Context) {
-	var req getUserRequest
-	if err := ctx.ShouldBindUri(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, lib.ErrorResponse(err))
-		return
-	}
+	authPayload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
 
-	user, err := h.service.GetUser(ctx, req.Username)
+	user, err := h.service.GetUser(ctx, authPayload.Username)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))
