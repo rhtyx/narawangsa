@@ -3,6 +3,7 @@ package readconfirmations
 import (
 	"context"
 
+	"github.com/rhtyx/narawangsa/internal/storage"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 )
 
@@ -13,10 +14,10 @@ type readConfirmationsStorage interface {
 
 type service struct {
 	repository readConfirmationsStorage
-	tx         postgres.TxInContext
+	tx         storage.ExecTx
 }
 
-func NewReadConfirmationsService(repository readConfirmationsStorage, tx postgres.TxInContext) IReadConfirmations {
+func NewReadConfirmationsService(repository readConfirmationsStorage, tx storage.ExecTx) IReadConfirmations {
 	return &service{
 		repository: repository,
 		tx:         tx,

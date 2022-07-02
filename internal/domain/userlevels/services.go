@@ -3,6 +3,7 @@ package userlevels
 import (
 	"context"
 
+	"github.com/rhtyx/narawangsa/internal/storage"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 )
 
@@ -14,10 +15,10 @@ type userLevelsStorage interface {
 
 type service struct {
 	repository userLevelsStorage
-	tx         postgres.TxInContext
+	tx         storage.ExecTx
 }
 
-func NewUserLevelsService(repository userLevelsStorage, tx postgres.TxInContext) IUserLevels {
+func NewUserLevelsService(repository userLevelsStorage, tx storage.ExecTx) IUserLevels {
 	return &service{
 		repository: repository,
 		tx:         tx,

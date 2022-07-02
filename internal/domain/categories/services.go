@@ -3,6 +3,7 @@ package categories
 import (
 	"context"
 
+	"github.com/rhtyx/narawangsa/internal/storage"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 )
 
@@ -16,10 +17,10 @@ type categoriesStorage interface {
 
 type service struct {
 	repository categoriesStorage
-	tx         postgres.TxInContext
+	tx         storage.ExecTx
 }
 
-func NewCategoriesService(repository categoriesStorage, tx postgres.TxInContext) ICategories {
+func NewCategoriesService(repository categoriesStorage, tx storage.ExecTx) ICategories {
 	return &service{
 		repository: repository,
 		tx:         tx,

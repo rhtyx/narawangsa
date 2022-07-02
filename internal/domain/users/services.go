@@ -3,6 +3,7 @@ package users
 import (
 	"context"
 
+	"github.com/rhtyx/narawangsa/internal/storage"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 )
 
@@ -16,10 +17,10 @@ type userStorage interface {
 
 type service struct {
 	repository userStorage
-	tx         postgres.TxInContext
+	tx         storage.ExecTx
 }
 
-func NewUserService(repository userStorage, tx postgres.TxInContext) IUsers {
+func NewUserService(repository userStorage, tx storage.ExecTx) IUsers {
 	return &service{
 		repository: repository,
 		tx:         tx,

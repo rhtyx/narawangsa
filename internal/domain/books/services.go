@@ -3,6 +3,7 @@ package books
 import (
 	"context"
 
+	"github.com/rhtyx/narawangsa/internal/storage"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 )
 
@@ -16,10 +17,10 @@ type booksStorage interface {
 
 type service struct {
 	repository booksStorage
-	tx         postgres.TxInContext
+	tx         storage.ExecTx
 }
 
-func NewBooksService(repository booksStorage, tx postgres.TxInContext) IBooks {
+func NewBooksService(repository booksStorage, tx storage.ExecTx) IBooks {
 	return &service{
 		repository: repository,
 		tx:         tx,
