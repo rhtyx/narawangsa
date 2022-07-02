@@ -27,7 +27,7 @@ func (h *handler) LoginUser(ctx *gin.Context) {
 			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))
 			return
 		}
-		ctx.JSON(http.StatusBadRequest, lib.ErrorResponse(err))
+		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return
 	}
 
@@ -37,5 +37,20 @@ func (h *handler) LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	accessToken, err := h.token.CreateToken(user.Username)
+	accessToken, err := h.token.CreateToken(user.Username, h.config.AccessTokenDuration)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
+		return
+	}
+
+	userResponse := userResponse{
+		ID:        user.ID,
+		Name:      user.Name,
+		Username:  user.Username,
+		Email:     user.Email,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}
+
+	ctx.JSON(http.StatusOK, lib.Response("success", "login successfully", userResponse, &accessToken))
 }

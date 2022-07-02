@@ -3,6 +3,7 @@ package users
 import (
 	"database/sql"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rhtyx/narawangsa/lib"
@@ -10,6 +11,15 @@ import (
 
 type getUserRequest struct {
 	Username string `uri:"username" binding:"required"`
+}
+
+type userResponse struct {
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	Username  string    `json:"username"`
+	Email     string    `json:"email"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (h *handler) Get(ctx *gin.Context) {
@@ -29,5 +39,13 @@ func (h *handler) Get(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "user has been returned", user))
+	response := userResponse{
+		ID:        user.ID,
+		Username:  user.Username,
+		Email:     user.Email,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}
+
+	ctx.JSON(http.StatusOK, lib.Response("success", "user has been returned", response, nil))
 }
