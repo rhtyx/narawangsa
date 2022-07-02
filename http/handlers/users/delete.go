@@ -21,6 +21,7 @@ func (h *handler) Delete(ctx *gin.Context) {
 
 	err := h.service.DeleteUser(ctx, req.Username)
 	if err != nil {
+		// TODO: Error if the row that has been deleted still return no error
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))
 			return
