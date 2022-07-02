@@ -13,7 +13,7 @@ import (
 var testQueries *Queries
 
 func TestMain(m *testing.M) {
-	config, err := lib.LoadConfig(".")
+	config, err := lib.LoadConfig("./../../..")
 	if err != nil {
 		log.Fatal("cannot load config: ", err)
 	}

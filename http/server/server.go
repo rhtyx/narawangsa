@@ -39,8 +39,8 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 		users := v1.Group("/users").Use(middleware.AuthMiddleware(token))
 		{
 			users.GET("/", user.Get)
-			users.PUT("/")
-			users.PATCH("/update_password")
+			users.PUT("/", user.Update)
+			users.PATCH("/update_password", user.UpdatePassword)
 			users.DELETE("/", user.Delete)
 		}
 
