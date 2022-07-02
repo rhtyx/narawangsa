@@ -41,19 +41,14 @@ func (s *service) DeleteUser(ctx context.Context, username string) error {
 	return err
 }
 
-func (s *service) GetUser(ctx context.Context, username string) (User, error) {
-	var user User
+func (s *service) GetUser(ctx context.Context, username string) (postgres.User, error) {
+	var user postgres.User
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
 		u, err := s.repository.GetUser(ctx, username)
 		if err != nil {
 			return err
 		}
-		user.ID = u.ID
-		user.Name = u.Name
-		user.Username = u.Username
-		user.Email = u.Email
-		user.CreatedAt = u.CreatedAt
-		user.UpdatedAt = u.UpdatedAt
+		user = u
 		return nil
 	})
 	return user, err

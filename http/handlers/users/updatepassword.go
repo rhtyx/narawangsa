@@ -13,6 +13,7 @@ type updatePasswordRequest struct {
 	Username    string `json:"username" binding:"required"`
 }
 
+// TODO: unfinished handler update password
 func (h *handler) UpdatePassword(ctx *gin.Context) {
 	var req updatePasswordRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
