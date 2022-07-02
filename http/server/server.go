@@ -33,7 +33,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	v1 := router.Group("/v1")
 	{
 		v1.POST("/signup", user.Create)
-		v1.POST("/login")
+		v1.POST("/login", user.LoginUser)
 		v1.GET("/logout")
 
 		users := v1.Group("/users").Use(middleware.AuthMiddleware(token))
