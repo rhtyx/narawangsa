@@ -21,8 +21,9 @@ func main() {
 		log.Fatal("cannot connect to db", err)
 	}
 
+	db := postgres.NewQueries(conn)
 	dbTx := postgres.NewTxInContext(conn)
-	server := server.New(dbTx)
+	server := server.New(db, dbTx)
 
 	err = server.Start(address)
 	if err != nil {
