@@ -25,7 +25,10 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext) *server {
 
 	router.GET("/ping", base.Ping)
 	router.POST("/users/create", user.Create)
+	// TODO: change the uri to validation
+	router.GET("/users/:username", user.Get)
 	router.DELETE("/users/delete/:username", user.Delete)
+	router.POST("/users/update_password/:username")
 	server.router = router
 	return server
 }
