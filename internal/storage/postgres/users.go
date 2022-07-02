@@ -71,7 +71,6 @@ WHERE "username" = $3
 `
 
 type UpdatePasswordUserParams struct {
-	OldPassword string    `json:"old_password"`
 	NewPassword string    `json:"new_password"`
 	UpdatedAt   time.Time `json:"updated_at"`
 	Username    string    `json:"username"`
