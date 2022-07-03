@@ -37,7 +37,7 @@ func (h *handler) LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	accessToken, err := h.token.CreateToken(user.Username, h.config.AccessTokenDuration)
+	accessToken, err := h.token.CreateToken(user.Username, user.ID, h.config.AccessTokenDuration)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return

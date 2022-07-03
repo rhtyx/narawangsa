@@ -12,12 +12,13 @@ func TestJWTMaker(t *testing.T) {
 	require.NoError(t, err)
 
 	username := "asep"
+	userId := 1
 	duration := time.Minute
 
 	issuedAt := time.Now()
 	expiredAt := issuedAt.Add(duration)
 
-	token, err := maker.CreateToken(username, duration)
+	token, err := maker.CreateToken(username, int64(userId), duration)
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 
@@ -27,6 +28,7 @@ func TestJWTMaker(t *testing.T) {
 
 	require.NotZero(t, payload.ID)
 	require.Equal(t, username, payload.Username)
+	require.Equal(t, int64(userId), payload.UserId)
 	require.WithinDuration(t, issuedAt, payload.IssuedAt, time.Second)
 	require.WithinDuration(t, expiredAt, payload.ExpiredAt, time.Second)
 }
