@@ -29,8 +29,8 @@ func (q *Queries) DeleteCategory(ctx context.Context, id int64) error {
 }
 
 const getCategory = `-- name: GetCategory :one
-SELECT id, name, created_at, updated_at FROM "categories"
-WHERE "name" = $1
+SELECT "id", "name", "created_at", "updated_at" FROM "categories"
+WHERE "name" LIKE $1
 `
 
 func (q *Queries) GetCategory(ctx context.Context, name string) (Category, error) {

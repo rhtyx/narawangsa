@@ -2,6 +2,7 @@ package categories
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -12,9 +13,11 @@ import (
 )
 
 func (h *handler) Get(ctx *gin.Context) {
-	var req categoryRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
-		limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "5"))
+	categoryName, ok := ctx.GetQuery("category_name")
+	fmt.Println(categoryName)
+	fmt.Println(ok)
+	if !ok {
+		limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "1"))
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 			return
@@ -43,7 +46,7 @@ func (h *handler) Get(ctx *gin.Context) {
 		return
 	}
 
-	response, err := h.service.GetCategory(ctx, req.Name)
+	response, err := h.service.GetCategory(ctx, categoryName)
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok {
 			switch pqErr.Code.Name() {
@@ -52,6 +55,7 @@ func (h *handler) Get(ctx *gin.Context) {
 				return
 			}
 		}
+		fmt.Println(err)
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return
 	}

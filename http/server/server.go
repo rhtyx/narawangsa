@@ -3,9 +3,11 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rhtyx/narawangsa/http/handlers/base"
+	c "github.com/rhtyx/narawangsa/http/handlers/categories"
 	ul "github.com/rhtyx/narawangsa/http/handlers/userlevels"
 	u "github.com/rhtyx/narawangsa/http/handlers/users"
 	"github.com/rhtyx/narawangsa/http/middleware"
+	"github.com/rhtyx/narawangsa/internal/domain/categories"
 	"github.com/rhtyx/narawangsa/internal/domain/userlevels"
 	"github.com/rhtyx/narawangsa/internal/domain/users"
 	"github.com/rhtyx/narawangsa/internal/storage"
@@ -25,12 +27,14 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	server := &server{store: storetx}
 	router := gin.Default()
 
-	userService := users.NewUserService(store, storetx)
+	usersService := users.NewUserService(store, storetx)
 	userLevelsService := userlevels.NewUserLevelsService(store, storetx)
+	categoriesService := categories.NewCategoriesService(store, storetx)
 
 	base := base.NewHandler()
-	user := u.NewHandler(userService, userLevelsService, token, config)
+	user := u.NewHandler(usersService, userLevelsService, token, config)
 	userlevel := ul.NewHandler(userLevelsService, token)
+	category := c.NewHandler(categoriesService)
 
 	router.GET("/ping", base.Ping)
 
@@ -59,10 +63,10 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 
 		categories := v1.Group("/categories")
 		{
-			categories.GET("/")
-			categories.POST("/")
-			categories.PUT("/:category_id")
-			categories.DELETE("/:category_id")
+			categories.GET("/", category.Get)
+			categories.POST("/", category.Create)
+			categories.PUT("/:category_id", category.Update)
+			categories.DELETE("/:category_id", category.Delete)
 		}
 
 		booklists := v1.Group("/booklists").Use(middleware.AuthMiddleware(token))

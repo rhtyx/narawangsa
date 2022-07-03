@@ -35,7 +35,7 @@ CREATE TABLE "category_books" (
 
 CREATE TABLE "categories" (
   "id" bigserial PRIMARY KEY,
-  "name" varchar(16) NOT NULL,
+  "name" varchar(16) UNIQUE NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );

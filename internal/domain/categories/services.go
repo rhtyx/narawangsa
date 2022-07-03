@@ -2,6 +2,7 @@ package categories
 
 import (
 	"context"
+	"strings"
 
 	"github.com/rhtyx/narawangsa/internal/storage"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
@@ -29,7 +30,7 @@ func NewCategoriesService(repository categoriesStorage, tx storage.ExecTx) ICate
 
 func (s *service) CreateCategory(ctx context.Context, name string) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
-		return s.repository.CreateCategory(ctx, name)
+		return s.repository.CreateCategory(ctx, strings.ToLower(name))
 	})
 	return err
 }
