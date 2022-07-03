@@ -3,10 +3,12 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rhtyx/narawangsa/http/handlers/base"
+	b "github.com/rhtyx/narawangsa/http/handlers/books"
 	c "github.com/rhtyx/narawangsa/http/handlers/categories"
 	ul "github.com/rhtyx/narawangsa/http/handlers/userlevels"
 	u "github.com/rhtyx/narawangsa/http/handlers/users"
 	"github.com/rhtyx/narawangsa/http/middleware"
+	"github.com/rhtyx/narawangsa/internal/domain/books"
 	"github.com/rhtyx/narawangsa/internal/domain/categories"
 	"github.com/rhtyx/narawangsa/internal/domain/userlevels"
 	"github.com/rhtyx/narawangsa/internal/domain/users"
@@ -30,11 +32,13 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	usersService := users.NewUserService(store, storetx)
 	userLevelsService := userlevels.NewUserLevelsService(store, storetx)
 	categoriesService := categories.NewCategoriesService(store, storetx)
+	booksService := books.NewBooksService(store, storetx)
 
 	base := base.NewHandler()
 	user := u.NewHandler(usersService, userLevelsService, token, config)
 	userlevel := ul.NewHandler(userLevelsService, token)
 	category := c.NewHandler(categoriesService)
+	book := b.Newhandler(booksService)
 
 	router.GET("/ping", base.Ping)
 
@@ -56,7 +60,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 		{
 			books.GET("/")
 			books.GET("/:book_id")
-			books.POST("/")
+			books.POST("/", book.Create)
 			books.PUT("/:book_id")
 			books.DELETE("/:book_id")
 		}
