@@ -8,12 +8,12 @@ import (
 	"github.com/rhtyx/narawangsa/lib"
 )
 
-type createCategoryRequest struct {
+type categoryRequest struct {
 	Name string `json:"name" binding:"required"`
 }
 
 func (h *handler) Create(ctx *gin.Context) {
-	var req createCategoryRequest
+	var req categoryRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, lib.ErrorResponse(err))
 		return
