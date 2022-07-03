@@ -17,10 +17,10 @@ dropdb:
 migrate-create:
 	migrate create -ext sql -dir db/migration -seq ${name}
 
-migrate-up:
+migrateup:
 	migrate -path db/migration -database "postgresql://narawangsa:narawangsa@localhost:5434/narawangsa_db?sslmode=disable" up
 
-migrate-down:
+migratedown:
 	migrate -path db/migration -database "postgresql://narawangsa:narawangsa@localhost:5434/narawangsa_db?sslmode=disable" down
 
 test:
