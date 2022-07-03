@@ -18,7 +18,7 @@ CREATE TABLE "user_levels" (
 
 CREATE TABLE "books" (
   "id" bigserial PRIMARY KEY,
-  "title" varchar(32) NOT NULL,
+  "title" varchar(32) UNIQUE NOT NULL,
   "author" varchar(32) NOT NULL,
   "year" char(4) NOT NULL,
   "pages" int NOT NULL,
