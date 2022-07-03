@@ -18,10 +18,8 @@ type updateCategoryRequest struct {
 func (h *handler) Update(ctx *gin.Context) {
 	var req updateCategoryRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
-			return
-		}
+		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
+		return
 	}
 
 	var categoryId, err = strconv.Atoi(ctx.Param("category_id"))
