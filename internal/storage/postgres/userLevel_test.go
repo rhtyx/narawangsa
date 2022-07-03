@@ -34,4 +34,6 @@ func TestUpdateUserLevelsLevel(t *testing.T) {
 	require.NoError(t, err)
 
 	testQueries.DeleteUser(context.Background(), argUser.Username)
+
+	testQueries.truncate()
 }

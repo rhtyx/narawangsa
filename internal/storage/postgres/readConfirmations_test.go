@@ -31,4 +31,6 @@ func TestListReadConfirmations(t *testing.T) {
 	listRC, err := testQueries.ListReadConfirmations(context.Background(), argListReadConfirmation)
 	require.NoError(t, err)
 	require.Len(t, listRC, 1)
+
+	testQueries.truncate()
 }

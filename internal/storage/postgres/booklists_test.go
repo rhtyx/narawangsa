@@ -57,4 +57,6 @@ func TestDeleteBookList(t *testing.T) {
 	bookIDAndCategoryID := getBookIDandCategoryID()
 	err := testQueries.DeleteBookList(context.Background(), bookIDAndCategoryID.BookID)
 	require.NoError(t, err)
+
+	testQueries.truncate()
 }

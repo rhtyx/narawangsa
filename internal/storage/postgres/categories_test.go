@@ -48,4 +48,6 @@ func TestDeleteCategory(t *testing.T) {
 	err2 := testQueries.DeleteCategory(context.Background(), categoryKoreanDrama.ID)
 	require.NoError(t, err1)
 	require.NoError(t, err2)
+
+	testQueries.truncate()
 }

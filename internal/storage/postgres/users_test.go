@@ -72,4 +72,6 @@ func TestUpdateUser(t *testing.T) {
 func TestDeleteUser(t *testing.T) {
 	err := testQueries.DeleteUser(context.Background(), argUser.Username)
 	require.NoError(t, err)
+
+	testQueries.truncate()
 }

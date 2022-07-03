@@ -34,4 +34,6 @@ func TestDeleteBookCategory(t *testing.T) {
 	bookCategoryParams := getBookIDandCategoryID()
 	err := testQueries.DeleteBookCategory(context.Background(), DeleteBookCategoryParams(bookCategoryParams))
 	require.NoError(t, err)
+
+	testQueries.truncate()
 }

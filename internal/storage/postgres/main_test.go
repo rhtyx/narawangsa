@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"os"
@@ -26,4 +27,21 @@ func TestMain(m *testing.M) {
 	testQueries = NewQueries(conn)
 
 	os.Exit(m.Run())
+}
+
+func (q *Queries) truncate() {
+	query := `
+	TRUNCATE "public"."books" CASCADE;
+TRUNCATE "public"."users" CASCADE;
+TRUNCATE "public"."book_lists" CASCADE;
+TRUNCATE "public"."user_levels" CASCADE;
+TRUNCATE "public"."schema_migrations" CASCADE;
+TRUNCATE "public"."categories" CASCADE;
+TRUNCATE "public"."read_confirmations" CASCADE;
+TRUNCATE "public"."category_books" CASCADE;
+	`
+	_, err := q.db.ExecContext(context.Background(), query)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

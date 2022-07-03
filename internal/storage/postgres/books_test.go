@@ -68,6 +68,8 @@ func TestDeleteBook(t *testing.T) {
 	books, _ := testQueries.ListBooks(context.Background(), 2)
 	for _, book := range books {
 		err = testQueries.DeleteBook(context.Background(), book.ID)
-		require.NoError(t, err)
 	}
+	require.NoError(t, err)
+
+	testQueries.truncate()
 }
