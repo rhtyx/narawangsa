@@ -6,12 +6,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	"github.com/rhtyx/narawangsa/http/middleware"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
+	"github.com/rhtyx/narawangsa/internal/token"
 	"github.com/rhtyx/narawangsa/lib"
 )
 
 type booklistRequest struct {
-	UserID    int64     `json:"user_id" binding:"required"`
 	BookID    int64     `json:"book_id" binding:"required"`
 	IsRead    bool      `json:"is_read" binding:"required"`
 	PagesRead int32     `json:"pages_read" binding:"required"`
@@ -19,6 +20,7 @@ type booklistRequest struct {
 }
 
 func (h *handler) Create(ctx *gin.Context) {
+	authPayload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
 	var req booklistRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
@@ -26,7 +28,7 @@ func (h *handler) Create(ctx *gin.Context) {
 	}
 
 	arg := postgres.CreateBookListParams{
-		UserID:    req.UserID,
+		UserID:    authPayload.UserId,
 		BookID:    req.BookID,
 		IsRead:    req.IsRead,
 		PagesRead: req.PagesRead,

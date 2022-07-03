@@ -50,7 +50,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	book := b.Newhandler(booksService)
 	categorybook := cb.NewHandler(categoryBooksService)
 	readconfirmation := rc.NewHandler(readConfirmationsService)
-	booklist := bl.NewHandler(booklistsService)
+	booklist := bl.NewHandler(booklistsService, token)
 
 	router.GET("/ping", base.Ping)
 
