@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rhtyx/narawangsa/http/handlers/base"
+	ul "github.com/rhtyx/narawangsa/http/handlers/userlevels"
 	u "github.com/rhtyx/narawangsa/http/handlers/users"
 	"github.com/rhtyx/narawangsa/http/middleware"
 	"github.com/rhtyx/narawangsa/internal/domain/userlevels"
@@ -29,6 +30,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 
 	base := base.NewHandler()
 	user := u.NewHandler(userService, userLevelsService, token, config)
+	userlevel := ul.NewHandler(userLevelsService, token)
 
 	router.GET("/ping", base.Ping)
 
@@ -42,7 +44,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 		{
 			users.GET("/", user.Get)
 			users.PUT("/", user.Update)
-			users.PATCH("/update_password", user.UpdatePassword)
+			users.PATCH("/updatepassword", user.UpdatePassword)
 			users.DELETE("/", user.Delete)
 		}
 
@@ -70,15 +72,16 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 			booklists.DELETE("/:book_id")
 		}
 
-		readConfirmations := v1.Group("/read_confirmations").Use(middleware.AuthMiddleware(token))
+		readConfirmations := v1.Group("/readconfirmations").Use(middleware.AuthMiddleware(token))
 		{
 			readConfirmations.GET("/")
 			readConfirmations.POST("/")
 		}
 
-		userLevels := v1.Group("/user_levels").Use(middleware.AuthMiddleware(token))
+		userLevels := v1.Group("/userlevels").Use(middleware.AuthMiddleware(token))
 		{
-			userLevels.PUT("/")
+			userLevels.GET("/", userlevel.Get)
+			userLevels.PUT("/", userlevel.Update)
 		}
 	}
 	// TODO: change the uri to validation
