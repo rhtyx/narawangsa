@@ -1,6 +1,7 @@
 package users
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -44,6 +45,26 @@ func (h *handler) Create(ctx *gin.Context) {
 				ctx.JSON(http.StatusForbidden, lib.ErrorResponse(err))
 				return
 			}
+		}
+		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
+		return
+	}
+
+	user, err := h.service.GetUser(ctx, req.Username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
+		return
+	}
+
+	err = h.userLevelService.CreateUserLevel(ctx, user.ID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))
+			return
 		}
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return

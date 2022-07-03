@@ -5,6 +5,7 @@ import (
 	"github.com/rhtyx/narawangsa/http/handlers/base"
 	u "github.com/rhtyx/narawangsa/http/handlers/users"
 	"github.com/rhtyx/narawangsa/http/middleware"
+	"github.com/rhtyx/narawangsa/internal/domain/userlevels"
 	"github.com/rhtyx/narawangsa/internal/domain/users"
 	"github.com/rhtyx/narawangsa/internal/storage"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
@@ -24,9 +25,10 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	router := gin.Default()
 
 	userService := users.NewUserService(store, storetx)
+	userLevelsService := userlevels.NewUserLevelsService(store, storetx)
 
 	base := base.NewHandler()
-	user := u.NewHandler(userService, token, config)
+	user := u.NewHandler(userService, userLevelsService, token, config)
 
 	router.GET("/ping", base.Ping)
 
