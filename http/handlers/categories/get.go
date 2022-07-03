@@ -2,7 +2,6 @@ package categories
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -14,8 +13,6 @@ import (
 
 func (h *handler) Get(ctx *gin.Context) {
 	categoryName, ok := ctx.GetQuery("category_name")
-	fmt.Println(categoryName)
-	fmt.Println(ok)
 	if !ok {
 		limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "1"))
 		if err != nil {
@@ -55,7 +52,6 @@ func (h *handler) Get(ctx *gin.Context) {
 				return
 			}
 		}
-		fmt.Println(err)
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return
 	}

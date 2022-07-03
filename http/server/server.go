@@ -58,8 +58,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 
 		books := v1.Group("/books")
 		{
-			books.GET("/")
-			books.GET("/:book_id")
+			books.GET("/", book.Get)
 			books.POST("/", book.Create)
 			books.PUT("/:book_id")
 			books.DELETE("/:book_id")
