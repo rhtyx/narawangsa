@@ -1,8 +1,8 @@
-commit:
+c:
 	git add .
-	git commit -m "${title}"
+	git commit -m "${t}"
 
-push:
+p:
 	git push origin master
 
 postgres:
