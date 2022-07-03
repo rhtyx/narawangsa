@@ -3,13 +3,19 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rhtyx/narawangsa/http/handlers/base"
+	bl "github.com/rhtyx/narawangsa/http/handlers/booklists"
 	b "github.com/rhtyx/narawangsa/http/handlers/books"
 	c "github.com/rhtyx/narawangsa/http/handlers/categories"
+	cb "github.com/rhtyx/narawangsa/http/handlers/categorybooks"
+	rc "github.com/rhtyx/narawangsa/http/handlers/readconfirmations"
 	ul "github.com/rhtyx/narawangsa/http/handlers/userlevels"
 	u "github.com/rhtyx/narawangsa/http/handlers/users"
 	"github.com/rhtyx/narawangsa/http/middleware"
+	"github.com/rhtyx/narawangsa/internal/domain/booklists"
 	"github.com/rhtyx/narawangsa/internal/domain/books"
 	"github.com/rhtyx/narawangsa/internal/domain/categories"
+	"github.com/rhtyx/narawangsa/internal/domain/categorybooks"
+	"github.com/rhtyx/narawangsa/internal/domain/readconfirmations"
 	"github.com/rhtyx/narawangsa/internal/domain/userlevels"
 	"github.com/rhtyx/narawangsa/internal/domain/users"
 	"github.com/rhtyx/narawangsa/internal/storage"
@@ -33,12 +39,18 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	userLevelsService := userlevels.NewUserLevelsService(store, storetx)
 	categoriesService := categories.NewCategoriesService(store, storetx)
 	booksService := books.NewBooksService(store, storetx)
+	categoryBooksService := categorybooks.NewCategoryBooksService(store, storetx)
+	readConfirmationsService := readconfirmations.NewReadConfirmationsService(store, storetx)
+	booklistsService := booklists.NewBookListsService(store, storetx)
 
 	base := base.NewHandler()
 	user := u.NewHandler(usersService, userLevelsService, token, config)
 	userlevel := ul.NewHandler(userLevelsService, token)
 	category := c.NewHandler(categoriesService)
 	book := b.Newhandler(booksService)
+	categorybook := cb.NewHandler(categoryBooksService)
+	readconfirmation := rc.NewHandler(readConfirmationsService)
+	booklist := bl.NewHandler(booklistsService)
 
 	router.GET("/ping", base.Ping)
 
@@ -72,17 +84,24 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 			categories.DELETE("/:category_id", category.Delete)
 		}
 
+		categorybooks := v1.Group("/categorybooks")
+		{
+			categorybooks.POST("/", categorybook.Create)
+			categorybooks.DELETE("/", categorybook.Delete)
+		}
+
 		booklists := v1.Group("/booklists").Use(middleware.AuthMiddleware(token))
 		{
-			booklists.GET("/")
-			booklists.POST("/")
-			booklists.DELETE("/:book_id")
+			booklists.GET("/", booklist.List)
+			booklists.POST("/", booklist.Create)
+			booklists.PUT("/", booklist.Update)
+			booklists.DELETE("/:book_id", booklist.Delete)
 		}
 
 		readConfirmations := v1.Group("/readconfirmations").Use(middleware.AuthMiddleware(token))
 		{
-			readConfirmations.GET("/")
-			readConfirmations.POST("/")
+			readConfirmations.GET("/", readconfirmation.List)
+			readConfirmations.POST("/", readconfirmation.Create)
 		}
 
 		userLevels := v1.Group("/userlevels").Use(middleware.AuthMiddleware(token))
