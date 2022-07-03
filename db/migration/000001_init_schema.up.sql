@@ -44,7 +44,7 @@ CREATE TABLE "read_confirmations" (
   "id" bigserial PRIMARY KEY,
   "book_list_id" bigint NOT NULL,
   "pages_read" int NOT NULL,
-  "created_at" timestamp DEFAULT (now())
+  "created_at" timestamp NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "book_lists" (

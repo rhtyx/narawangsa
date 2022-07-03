@@ -3,26 +3,28 @@ package readconfirmations
 import (
 	"database/sql"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 	"github.com/rhtyx/narawangsa/lib"
 )
 
-type listReadConfirmationRequest struct {
-	BookListID int64 `json:"book_list_id" binding:"required"`
-	Limit      int32 `json:"limit" binding:"required"`
-}
-
 func (h *handler) List(ctx *gin.Context) {
-	var req listReadConfirmationRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	booklistId, err := strconv.Atoi(ctx.Query("booklist_id"))
+	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return
 	}
+	limit, err := strconv.Atoi(ctx.Query("limit"))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
+		return
+	}
+
 	arg := postgres.ListReadConfirmationsParams{
-		BookListID: req.BookListID,
-		Limit:      req.Limit,
+		BookListID: int64(booklistId),
+		Limit:      int32(limit),
 	}
 
 	response, err := h.service.ListReadConfirmations(ctx, arg)

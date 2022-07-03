@@ -14,9 +14,9 @@ import (
 
 type booklistRequest struct {
 	BookID    int64     `json:"book_id" binding:"required"`
-	IsRead    bool      `json:"is_read" binding:"required"`
-	PagesRead int32     `json:"pages_read" binding:"required"`
-	EndDate   time.Time `json:"end_date" binding:"required" time_format:"2006-01-02"`
+	IsRead    bool      `json:"is_read"`
+	PagesRead int32     `json:"pages_read"`
+	EndDate   time.Time `json:"end_date" binding:"required"`
 }
 
 func (h *handler) Create(ctx *gin.Context) {

@@ -13,7 +13,7 @@ import (
 
 type readConfirmationsRequest struct {
 	BookId    int64 `json:"book_id" binding:"required"`
-	Pagesread int32 `json:"pages_read" binding:"required"`
+	Pagesread int32 `json:"pages_read"`
 }
 
 func (h *handler) Create(ctx *gin.Context) {

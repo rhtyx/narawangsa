@@ -1,6 +1,8 @@
 package postgres
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
 	ID             int64     `json:"id"`
@@ -39,4 +41,11 @@ type Category struct {
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type ReadConfirmation struct {
+	ID         int64     `json:"id"`
+	BookListID int64     `json:"book_list_id"`
+	PagesRead  int32     `json:"pages_read"`
+	CreatedAt  time.Time `json:"created_at"`
 }

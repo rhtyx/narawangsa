@@ -9,7 +9,7 @@ import (
 
 type readConfirmationsStorage interface {
 	CreateReadConfirmation(ctx context.Context, arg postgres.CreateReadConfirmationParams) error
-	ListReadConfirmations(ctx context.Context, arg postgres.ListReadConfirmationsParams) ([]postgres.ListReadConfirmationsRow, error)
+	ListReadConfirmations(ctx context.Context, arg postgres.ListReadConfirmationsParams) ([]postgres.ReadConfirmation, error)
 }
 
 type service struct {
@@ -30,8 +30,8 @@ func (s *service) CreateReadConfirmation(ctx context.Context, arg postgres.Creat
 	})
 	return err
 }
-func (s *service) ListReadConfirmations(ctx context.Context, arg postgres.ListReadConfirmationsParams) ([]postgres.ListReadConfirmationsRow, error) {
-	var readConfirmations []postgres.ListReadConfirmationsRow
+func (s *service) ListReadConfirmations(ctx context.Context, arg postgres.ListReadConfirmationsParams) ([]postgres.ReadConfirmation, error) {
+	var readConfirmations []postgres.ReadConfirmation
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
 		rc, err := s.repository.ListReadConfirmations(ctx, arg)
 		if err != nil {

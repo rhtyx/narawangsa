@@ -23,7 +23,7 @@ func (q *Queries) CreateReadConfirmation(ctx context.Context, arg CreateReadConf
 }
 
 const listReadConfirmations = `-- name: ListReadConfirmations :many
-SELECT "book_list_id", "pages_read"
+SELECT id, book_list_id, pages_read, created_at
 FROM "read_confirmations"
 WHERE "book_list_id" = $1
 LIMIT $2
@@ -39,16 +39,21 @@ type ListReadConfirmationsRow struct {
 	PagesRead  int32 `json:"pages_read"`
 }
 
-func (q *Queries) ListReadConfirmations(ctx context.Context, arg ListReadConfirmationsParams) ([]ListReadConfirmationsRow, error) {
+func (q *Queries) ListReadConfirmations(ctx context.Context, arg ListReadConfirmationsParams) ([]ReadConfirmation, error) {
 	rows, err := q.db.QueryContext(ctx, listReadConfirmations, arg.BookListID, arg.Limit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ListReadConfirmationsRow
+	var items []ReadConfirmation
 	for rows.Next() {
-		var i ListReadConfirmationsRow
-		if err := rows.Scan(&i.BookListID, &i.PagesRead); err != nil {
+		var i ReadConfirmation
+		if err := rows.Scan(
+			&i.ID,
+			&i.BookListID,
+			&i.PagesRead,
+			&i.CreatedAt,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
