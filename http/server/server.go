@@ -45,12 +45,12 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 
 	base := base.NewHandler()
 	user := u.NewHandler(usersService, userLevelsService, token, config)
-	userlevel := ul.NewHandler(userLevelsService, token)
+	userlevel := ul.NewHandler(userLevelsService)
 	category := c.NewHandler(categoriesService)
 	book := b.Newhandler(booksService)
 	categorybook := cb.NewHandler(categoryBooksService)
-	readconfirmation := rc.NewHandler(readConfirmationsService)
-	booklist := bl.NewHandler(booklistsService, token)
+	readconfirmation := rc.NewHandler(readConfirmationsService, booklistsService)
+	booklist := bl.NewHandler(booklistsService)
 
 	router.GET("/ping", base.Ping)
 
