@@ -1,6 +1,16 @@
-# Narawangs
+# Narawangsa
 
 Narawangsa is an app for managing your reading schedule. It is such a fantastic app. It can increase your reading intensity.
+
+# Features
+- Login and store JWT to the user
+- Create, Read, Update, and Delete user
+- Create, Read, Update, and Delete book
+- Create, Read, Update, and Delete category
+- Create, Read, Update, and Delete booklist
+- Create and Delete category book
+- Read and Update user level
+- Create and Read read confirmation
 
 ## Installation
 
@@ -50,3 +60,6 @@ make migrateup
 ```bash
 make run
 ```
+
+## Test
+This is the [link](https://drive.google.com/drive/folders/1Pmmm7uNadgNJjmD2oqOakcMgVTWjdOHu?usp=sharing) where postman environment and collection provided.
