@@ -20,11 +20,11 @@ func (q *Queries) CreateCategory(ctx context.Context, name string) error {
 
 const deleteCategory = `-- name: DeleteCategory :exec
 DELETE FROM "categories"
-WHERE "name" = $1
+WHERE "id" = $1
 `
 
-func (q *Queries) DeleteCategory(ctx context.Context, name string) error {
-	_, err := q.db.ExecContext(ctx, deleteCategory, name)
+func (q *Queries) DeleteCategory(ctx context.Context, id int64) error {
+	_, err := q.db.ExecContext(ctx, deleteCategory, id)
 	return err
 }
 

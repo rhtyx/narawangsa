@@ -9,7 +9,7 @@ import (
 
 type categoriesStorage interface {
 	CreateCategory(ctx context.Context, name string) error
-	DeleteCategory(ctx context.Context, name string) error
+	DeleteCategory(ctx context.Context, id int64) error
 	GetCategory(ctx context.Context, name string) (postgres.Category, error)
 	ListCategories(ctx context.Context, arg postgres.ListCategoriesParams) ([]postgres.Category, error)
 	UpdateCategory(ctx context.Context, arg postgres.UpdateCategoryParams) error
@@ -33,9 +33,9 @@ func (s *service) CreateCategory(ctx context.Context, name string) error {
 	})
 	return err
 }
-func (s *service) DeleteCategory(ctx context.Context, name string) error {
+func (s *service) DeleteCategory(ctx context.Context, id int64) error {
 	err := s.tx.Run(ctx, func(ctx context.Context) error {
-		return s.repository.DeleteCategory(ctx, name)
+		return s.repository.DeleteCategory(ctx, id)
 	})
 	return err
 }

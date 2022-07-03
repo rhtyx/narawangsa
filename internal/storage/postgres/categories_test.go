@@ -42,8 +42,10 @@ func TestUpdateCategory(t *testing.T) {
 }
 
 func TestDeleteCategory(t *testing.T) {
-	err1 := testQueries.DeleteCategory(context.Background(), "Fantasy")
-	err2 := testQueries.DeleteCategory(context.Background(), "Korean Drama")
+	categoryFantasy, _ := testQueries.GetCategory(context.Background(), "Fantasy")
+	categoryKoreanDrama, _ := testQueries.GetCategory(context.Background(), "Korean Drama")
+	err1 := testQueries.DeleteCategory(context.Background(), categoryFantasy.ID)
+	err2 := testQueries.DeleteCategory(context.Background(), categoryKoreanDrama.ID)
 	require.NoError(t, err1)
 	require.NoError(t, err2)
 }
