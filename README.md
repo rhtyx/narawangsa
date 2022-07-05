@@ -51,12 +51,17 @@ make postgres
 make createdb
 ```
 
-5. Do the migration to build up the tables
+5. Install go-migrate
+```bash
+curl -L https://github.com/golang-migrate/migrate/releases/download/$version/migrate.$platform-amd64.tar.gz | tar xvz
+```
+
+6. Do the migration to build up the tables
 ```bash
 make migrateup
 ```
 
-6. Run the server
+7. Run the server
 ```bash
 make run
 ```
