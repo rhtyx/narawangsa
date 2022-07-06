@@ -17,7 +17,6 @@ type updatePasswordRequest struct {
 	NewPassword string `json:"new_password" binding:"required,min=8"`
 }
 
-// TODO: unfinished handler update password
 func (h *handler) UpdatePassword(ctx *gin.Context) {
 	authPayload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
 

@@ -101,7 +101,6 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 			userLevels.PUT("/", userlevel.Update)
 		}
 	}
-	// TODO: change the uri to validation
 	server.router = router
 	return server
 }

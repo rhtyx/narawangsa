@@ -13,7 +13,6 @@ type loginRequest struct {
 	Password string `json:"password" binding:"required,min=8"`
 }
 
-// TODO: unfinished Login User handler
 func (h *handler) LoginUser(ctx *gin.Context) {
 	var req loginRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
