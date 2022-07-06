@@ -49,3 +49,8 @@ type ReadConfirmation struct {
 	PagesRead  int32     `json:"pages_read"`
 	CreatedAt  time.Time `json:"created_at"`
 }
+
+type Authentication struct {
+	ID           int64  `json:"id"`
+	RefreshToken string `json:"refresh_token"`
+}

@@ -6,19 +6,14 @@ import (
 
 const createRefreshToken = `-- name: CreateRefreshToken :exec
 INSERT INTO "authentications" (
-  "id", "refresh_token"
+  "refresh_token"
 ) VALUES (
-  $1, $2
+  $1
 )
 `
 
-type CreateRefreshTokenParams struct {
-	ID           int64  `json:"id"`
-	RefreshToken string `json:"refresh_token"`
-}
-
-func (q *Queries) CreateRefreshToken(ctx context.Context, arg CreateRefreshTokenParams) error {
-	_, err := q.db.ExecContext(ctx, createRefreshToken, arg.ID, arg.RefreshToken)
+func (q *Queries) CreateRefreshToken(ctx context.Context, refreshToken string) error {
+	_, err := q.db.ExecContext(ctx, createRefreshToken, refreshToken)
 	return err
 }
 
