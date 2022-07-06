@@ -39,7 +39,7 @@ func (h *handler) Get(ctx *gin.Context) {
 			ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 			return
 		}
-		ctx.JSON(http.StatusOK, lib.Response("success", "categories have been returned", response, nil))
+		ctx.JSON(http.StatusOK, lib.Response("success", "categories have been returned", response, nil, nil))
 		return
 	}
 
@@ -56,5 +56,5 @@ func (h *handler) Get(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "category has been returned", response, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "category has been returned", response, nil, nil))
 }

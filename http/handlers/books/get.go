@@ -29,7 +29,7 @@ func (h *handler) Get(ctx *gin.Context) {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, lib.Response("success", "books have been returned", response, nil))
+		ctx.JSON(http.StatusOK, lib.Response("success", "books have been returned", response, nil, nil))
 		return
 	}
 
@@ -46,5 +46,5 @@ func (h *handler) Get(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "book has been returned", response, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "book has been returned", response, nil, nil))
 }

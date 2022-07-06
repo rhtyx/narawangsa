@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rhtyx/narawangsa/internal/token"
+	t "github.com/rhtyx/narawangsa/internal/token"
 	"github.com/rhtyx/narawangsa/lib"
 )
 
@@ -17,7 +17,7 @@ const (
 	AuthorizationPayloadKey = "authorization_payload"
 )
 
-func AuthMiddleware(token token.Maker) gin.HandlerFunc {
+func AuthMiddleware(token t.Maker) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authorizationHeader := ctx.GetHeader(authorizationHeaderKey)
 		if len(authorizationHeader) == 0 {
@@ -43,6 +43,9 @@ func AuthMiddleware(token token.Maker) gin.HandlerFunc {
 		accessToken := fields[1]
 		payload, err := token.VerifyToken(accessToken)
 		if err != nil {
+			if err == t.ErrExpiredToken {
+
+			}
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, lib.ErrorResponse(err))
 			return
 		}

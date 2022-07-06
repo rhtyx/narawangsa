@@ -52,5 +52,5 @@ func (h *handler) Update(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, lib.Response("success", "book has been updated", nil, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "book has been updated", nil, nil, nil))
 }

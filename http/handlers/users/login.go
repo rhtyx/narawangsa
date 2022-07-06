@@ -37,6 +37,18 @@ func (h *handler) LoginUser(ctx *gin.Context) {
 		return
 	}
 
+	refreshToken, err := h.token.CreateRefreshToken(user.ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
+		return
+	}
+
+	err = h.authenticationService.CreateRefreshToken(ctx, refreshToken)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
+		return
+	}
+
 	accessToken, err := h.token.CreateToken(user.Username, user.ID, h.config.AccessTokenDuration)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
@@ -51,5 +63,5 @@ func (h *handler) LoginUser(ctx *gin.Context) {
 		UpdatedAt: user.UpdatedAt,
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "login successfully", userResponse, &accessToken))
+	ctx.JSON(http.StatusOK, lib.Response("success", "login successfully", userResponse, &accessToken, &refreshToken))
 }

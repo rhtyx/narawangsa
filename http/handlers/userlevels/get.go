@@ -23,5 +23,5 @@ func (h *handler) Get(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "user level has been returned", response, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "user level has been returned", response, nil, nil))
 }

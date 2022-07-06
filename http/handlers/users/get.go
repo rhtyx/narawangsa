@@ -40,5 +40,5 @@ func (h *handler) Get(ctx *gin.Context) {
 		UpdatedAt: user.UpdatedAt,
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "user has been returned", response, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "user has been returned", response, nil, nil))
 }

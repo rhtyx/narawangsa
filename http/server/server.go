@@ -33,7 +33,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	app := app.NewContainer(store, storetx)
 
 	base := base.NewHandler()
-	user := users.NewHandler(app.UsersService, app.UserLevelsService, token, config)
+	user := users.NewHandler(app.UsersService, app.UserLevelsService, app.AuthenticationService, token, config)
 	userlevel := userlevels.NewHandler(app.UserLevelsService)
 	category := categories.NewHandler(app.CategoriesService)
 	book := books.Newhandler(app.BooksService)
@@ -48,7 +48,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	{
 		v1.POST("/signup", user.Create)
 		v1.POST("/login", user.LoginUser)
-		v1.GET("/logout")
+		v1.DELETE("/logout")
 		v1.POST("/sendnotifications", notification.Send)
 
 		users := v1.Group("/users").Use(middleware.AuthMiddleware(token))

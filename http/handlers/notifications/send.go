@@ -30,5 +30,5 @@ func (h *handler) Send(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "notification has been sent", nil, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "notification has been sent", nil, nil, nil))
 }

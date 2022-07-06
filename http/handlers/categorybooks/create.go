@@ -39,5 +39,5 @@ func (h *handler) Create(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, lib.Response("success", "books category has been created", nil, nil))
+	ctx.JSON(http.StatusCreated, lib.Response("success", "books category has been created", nil, nil, nil))
 }

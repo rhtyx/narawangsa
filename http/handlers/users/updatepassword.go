@@ -64,5 +64,5 @@ func (h *handler) UpdatePassword(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, lib.Response("success", "user password has been updated", nil, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "user password has been updated", nil, nil, nil))
 }

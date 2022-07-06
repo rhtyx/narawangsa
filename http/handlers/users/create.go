@@ -70,5 +70,5 @@ func (h *handler) Create(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "user has been created", nil, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "user has been created", nil, nil, nil))
 }

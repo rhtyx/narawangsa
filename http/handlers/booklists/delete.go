@@ -25,5 +25,5 @@ func (h *handler) Delete(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "booklist has been deleted", nil, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "booklist has been deleted", nil, nil, nil))
 }

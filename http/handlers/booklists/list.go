@@ -22,5 +22,5 @@ func (h *handler) List(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "booklists have been returned", response, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "booklists have been returned", response, nil, nil))
 }

@@ -37,5 +37,5 @@ func (h *handler) List(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "read confirmations has been returned", response, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "read confirmations has been returned", response, nil, nil))
 }

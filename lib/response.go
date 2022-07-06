@@ -1,6 +1,6 @@
 package lib
 
-func Response(status string, message string, obj interface{}, accessToken *string) interface{} {
+func Response(status string, message string, obj interface{}, accessToken *string, refreshToken *string) interface{} {
 	res := map[string]interface{}{
 		"status":  status,
 		"message": message,
@@ -12,6 +12,10 @@ func Response(status string, message string, obj interface{}, accessToken *strin
 
 	if accessToken != nil {
 		res["access_token"] = accessToken
+	}
+
+	if refreshToken != nil {
+		res["refresh_token"] = refreshToken
 	}
 
 	return res

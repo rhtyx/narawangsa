@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/rhtyx/narawangsa/internal/domain/authentications"
 	"github.com/rhtyx/narawangsa/internal/domain/booklists"
 	"github.com/rhtyx/narawangsa/internal/domain/books"
 	"github.com/rhtyx/narawangsa/internal/domain/categories"
@@ -13,6 +14,7 @@ import (
 )
 
 type container struct {
+	AuthenticationService    authentications.IAuthentications
 	UsersService             users.IUsers
 	UserLevelsService        userlevels.IUserLevels
 	CategoriesService        categories.ICategories
@@ -25,6 +27,7 @@ type container struct {
 
 func NewContainer(store *postgres.Queries, storetx *postgres.TxInContext) *container {
 	return &container{
+		AuthenticationService:    authentications.NewAuthenticationsService(store, storetx),
 		UsersService:             users.NewUserService(store, storetx),
 		UserLevelsService:        userlevels.NewUserLevelsService(store, storetx),
 		CategoriesService:        categories.NewCategoriesService(store, storetx),

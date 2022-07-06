@@ -21,5 +21,5 @@ func (h *handler) Delete(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, lib.Response("success", "user has been deleted", nil, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "user has been deleted", nil, nil, nil))
 }

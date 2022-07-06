@@ -42,5 +42,5 @@ func (h *handler) Update(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, lib.Response("success", "user level has been updated", nil, nil))
+	ctx.JSON(http.StatusOK, lib.Response("success", "user level has been updated", nil, nil, nil))
 }
