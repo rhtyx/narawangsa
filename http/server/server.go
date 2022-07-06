@@ -2,24 +2,17 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/rhtyx/narawangsa/http/app"
 	"github.com/rhtyx/narawangsa/http/handlers/base"
-	bl "github.com/rhtyx/narawangsa/http/handlers/booklists"
-	b "github.com/rhtyx/narawangsa/http/handlers/books"
-	c "github.com/rhtyx/narawangsa/http/handlers/categories"
-	cb "github.com/rhtyx/narawangsa/http/handlers/categorybooks"
-	n "github.com/rhtyx/narawangsa/http/handlers/notifications"
-	rc "github.com/rhtyx/narawangsa/http/handlers/readconfirmations"
-	ul "github.com/rhtyx/narawangsa/http/handlers/userlevels"
-	u "github.com/rhtyx/narawangsa/http/handlers/users"
+	"github.com/rhtyx/narawangsa/http/handlers/booklists"
+	"github.com/rhtyx/narawangsa/http/handlers/books"
+	"github.com/rhtyx/narawangsa/http/handlers/categories"
+	"github.com/rhtyx/narawangsa/http/handlers/categorybooks"
+	"github.com/rhtyx/narawangsa/http/handlers/notifications"
+	"github.com/rhtyx/narawangsa/http/handlers/readconfirmations"
+	"github.com/rhtyx/narawangsa/http/handlers/userlevels"
+	"github.com/rhtyx/narawangsa/http/handlers/users"
 	"github.com/rhtyx/narawangsa/http/middleware"
-	"github.com/rhtyx/narawangsa/internal/domain/booklists"
-	"github.com/rhtyx/narawangsa/internal/domain/books"
-	"github.com/rhtyx/narawangsa/internal/domain/categories"
-	"github.com/rhtyx/narawangsa/internal/domain/categorybooks"
-	"github.com/rhtyx/narawangsa/internal/domain/notifications"
-	"github.com/rhtyx/narawangsa/internal/domain/readconfirmations"
-	"github.com/rhtyx/narawangsa/internal/domain/userlevels"
-	"github.com/rhtyx/narawangsa/internal/domain/users"
 	"github.com/rhtyx/narawangsa/internal/storage"
 	"github.com/rhtyx/narawangsa/internal/storage/postgres"
 	"github.com/rhtyx/narawangsa/internal/token"
@@ -37,24 +30,17 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	server := &server{store: storetx}
 	router := gin.Default()
 
-	usersService := users.NewUserService(store, storetx)
-	userLevelsService := userlevels.NewUserLevelsService(store, storetx)
-	categoriesService := categories.NewCategoriesService(store, storetx)
-	booksService := books.NewBooksService(store, storetx)
-	categoryBooksService := categorybooks.NewCategoryBooksService(store, storetx)
-	readConfirmationsService := readconfirmations.NewReadConfirmationsService(store, storetx)
-	booklistsService := booklists.NewBookListsService(store, storetx)
-	notificationsService := notifications.NewNotificationsService()
+	app := app.NewContainer(store, storetx)
 
 	base := base.NewHandler()
-	user := u.NewHandler(usersService, userLevelsService, token, config)
-	userlevel := ul.NewHandler(userLevelsService)
-	category := c.NewHandler(categoriesService)
-	book := b.Newhandler(booksService)
-	categorybook := cb.NewHandler(categoryBooksService)
-	readconfirmation := rc.NewHandler(readConfirmationsService, booklistsService)
-	booklist := bl.NewHandler(booklistsService)
-	notification := n.NewHandler(notificationsService)
+	user := users.NewHandler(app.UsersService, app.UserLevelsService, token, config)
+	userlevel := userlevels.NewHandler(app.UserLevelsService)
+	category := categories.NewHandler(app.CategoriesService)
+	book := books.Newhandler(app.BooksService)
+	categorybook := categorybooks.NewHandler(app.CategoryBooksService)
+	readconfirmation := readconfirmations.NewHandler(app.ReadConfirmationsService, app.BooklistsService)
+	booklist := booklists.NewHandler(app.BooklistsService)
+	notification := notifications.NewHandler(app.NotificationsService)
 
 	router.GET("/ping", base.Ping)
 
