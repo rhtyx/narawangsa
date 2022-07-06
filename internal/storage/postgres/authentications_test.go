@@ -41,4 +41,5 @@ func TestDeleteRefreshToken(t *testing.T) {
 
 	err := testQueries.DeleteRefreshToken(context.Background(), token)
 	require.NoError(t, err)
+	testQueries.truncate()
 }

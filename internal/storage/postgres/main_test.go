@@ -39,6 +39,7 @@ TRUNCATE "public"."schema_migrations" CASCADE;
 TRUNCATE "public"."categories" CASCADE;
 TRUNCATE "public"."read_confirmations" CASCADE;
 TRUNCATE "public"."category_books" CASCADE;
+TRUNCATE "public"."authentications" CASCADE;
 	`
 	_, err := q.db.ExecContext(context.Background(), query)
 	if err != nil {
