@@ -10,7 +10,7 @@ func NewNotificationsService() INotifications {
 	return &message{}
 }
 
-func (s *message) SendNotifications(ctx context.Context, name, email, quotes string) error {
+func (s *message) SendNotifications(ctx context.Context) error {
 	client := courier.CreateClient("pk_prod_5MWJ36B934M1VJHA86AZ3CYPRXP9", nil)
 
 	_, err := client.SendMessage(
@@ -18,12 +18,12 @@ func (s *message) SendNotifications(ctx context.Context, name, email, quotes str
 		courier.SendMessageRequestBody{
 			Message: map[string]interface{}{
 				"to": map[string]string{
-					"email": email,
+					"email": ctx.Value("email").(string),
 				},
 				"template": "3RR2FE9B2X4BXXQ4G15XDAYXF05A",
 				"data": map[string]string{
-					"name":   name,
-					"quotes": quotes,
+					"name":   ctx.Value("name").(string),
+					"quotes": ctx.Value("quotes").(string),
 				},
 			},
 		},
