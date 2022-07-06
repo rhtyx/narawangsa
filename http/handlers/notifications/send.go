@@ -29,4 +29,6 @@ func (h *handler) Send(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, lib.ErrorResponse(err))
 		return
 	}
+
+	ctx.JSON(http.StatusOK, lib.Response("success", "notification has been sent", nil, nil))
 }
