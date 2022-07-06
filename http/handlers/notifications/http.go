@@ -6,7 +6,7 @@ type handler struct {
 	service notifications.INotifications
 }
 
-func NewService(service notifications.INotifications) *handler {
+func NewHandler(service notifications.INotifications) *handler {
 	return &handler{
 		service: service,
 	}

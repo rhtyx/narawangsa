@@ -7,6 +7,7 @@ import (
 	b "github.com/rhtyx/narawangsa/http/handlers/books"
 	c "github.com/rhtyx/narawangsa/http/handlers/categories"
 	cb "github.com/rhtyx/narawangsa/http/handlers/categorybooks"
+	n "github.com/rhtyx/narawangsa/http/handlers/notifications"
 	rc "github.com/rhtyx/narawangsa/http/handlers/readconfirmations"
 	ul "github.com/rhtyx/narawangsa/http/handlers/userlevels"
 	u "github.com/rhtyx/narawangsa/http/handlers/users"
@@ -15,6 +16,7 @@ import (
 	"github.com/rhtyx/narawangsa/internal/domain/books"
 	"github.com/rhtyx/narawangsa/internal/domain/categories"
 	"github.com/rhtyx/narawangsa/internal/domain/categorybooks"
+	"github.com/rhtyx/narawangsa/internal/domain/notifications"
 	"github.com/rhtyx/narawangsa/internal/domain/readconfirmations"
 	"github.com/rhtyx/narawangsa/internal/domain/userlevels"
 	"github.com/rhtyx/narawangsa/internal/domain/users"
@@ -42,6 +44,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	categoryBooksService := categorybooks.NewCategoryBooksService(store, storetx)
 	readConfirmationsService := readconfirmations.NewReadConfirmationsService(store, storetx)
 	booklistsService := booklists.NewBookListsService(store, storetx)
+	notificationsService := notifications.NewNotificationsService()
 
 	base := base.NewHandler()
 	user := u.NewHandler(usersService, userLevelsService, token, config)
@@ -51,6 +54,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	categorybook := cb.NewHandler(categoryBooksService)
 	readconfirmation := rc.NewHandler(readConfirmationsService, booklistsService)
 	booklist := bl.NewHandler(booklistsService)
+	notification := n.NewHandler(notificationsService)
 
 	router.GET("/ping", base.Ping)
 
@@ -59,6 +63,7 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 		v1.POST("/signup", user.Create)
 		v1.POST("/login", user.LoginUser)
 		v1.GET("/logout")
+		v1.POST("/sendnotifications", notification.Send)
 
 		users := v1.Group("/users").Use(middleware.AuthMiddleware(token))
 		{
