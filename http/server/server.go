@@ -48,7 +48,8 @@ func New(store *postgres.Queries, storetx *postgres.TxInContext, config lib.Conf
 	{
 		v1.POST("/signup", user.Create)
 		v1.POST("/login", user.LoginUser)
-		v1.DELETE("/logout")
+		v1.PUT("/token", user.RefreshToken)
+		v1.DELETE("/logout", user.LogoutUser)
 		v1.POST("/sendnotifications", notification.Send)
 
 		users := v1.Group("/users").Use(middleware.AuthMiddleware(token))

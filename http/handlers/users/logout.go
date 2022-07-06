@@ -8,12 +8,12 @@ import (
 	"github.com/rhtyx/narawangsa/lib"
 )
 
-type logoutRequest struct {
-	RefreshToken string `json:"refres_token" binding:"required"`
+type refreshTokenRequest struct {
+	RefreshToken string `json:"refresh_token" binding:"required"`
 }
 
 func (h *handler) LogoutUser(ctx *gin.Context) {
-	var req logoutRequest
+	var req refreshTokenRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, lib.ErrorResponse(err))
 		return

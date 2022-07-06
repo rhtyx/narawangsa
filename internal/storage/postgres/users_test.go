@@ -10,6 +10,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var id int64
+
 var argUser = CreateUserParams{
 	Name:     "Tony",
 	Username: "tony",
@@ -50,6 +52,16 @@ func TestCreateUser(t *testing.T) {
 
 func TestGetUser(t *testing.T) {
 	user, err := testQueries.GetUser(context.Background(), argUser.Username)
+	id = user.ID
+	require.NoError(t, err)
+	require.NotEmpty(t, user)
+	require.Equal(t, argUser.Name, user.Name)
+	require.Equal(t, argUser.Username, user.Username)
+	require.Equal(t, argUser.Email, user.Email)
+}
+
+func TestGetUserById(t *testing.T) {
+	user, err := testQueries.GetUserById(context.Background(), id)
 	require.NoError(t, err)
 	require.NotEmpty(t, user)
 	require.Equal(t, argUser.Name, user.Name)
