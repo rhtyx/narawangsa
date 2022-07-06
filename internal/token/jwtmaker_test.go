@@ -49,3 +49,8 @@ func TestJWTRefreshMaker(t *testing.T) {
 	require.NotZero(t, payload.ID)
 	require.Equal(t, int64(userId), payload.UserId)
 }
+
+func TestFailNewJWT(t *testing.T) {
+	_, err := NewJWTMaker("qwerty", "qwerty")
+	require.EqualError(t, err, "invalid key size: must be at least 32 characters")
+}
