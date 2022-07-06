@@ -23,7 +23,7 @@ func (s *message) SendNotifications(ctx context.Context) error {
 				"template": "3RR2FE9B2X4BXXQ4G15XDAYXF05A",
 				"data": map[string]string{
 					"name":   ctx.Value("name").(string),
-					"quotes": ctx.Value("quotes").(string),
+					"quotes": ctx.Value("quote").(string),
 				},
 			},
 		},
