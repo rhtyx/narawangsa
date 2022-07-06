@@ -27,7 +27,7 @@ func (h *handler) UpdatePassword(ctx *gin.Context) {
 		return
 	}
 
-	user, err := h.service.GetUser(ctx, authPayload.Username)
+	user, err := h.service.GetUser(ctx, *authPayload.Username)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))

@@ -8,7 +8,7 @@ import (
 )
 
 func TestJWTMaker(t *testing.T) {
-	maker, err := NewJWTMaker("qwertyuiopasdfghjklzxcvbnmqwerty")
+	maker, err := NewJWTMaker("qwertyuiopasdfghjklzxcvbnmqwerty", "qwertyuiopasdfghjklzxcvbnmqwerkl")
 	require.NoError(t, err)
 
 	username := "asep"
@@ -27,8 +27,25 @@ func TestJWTMaker(t *testing.T) {
 	require.NotEmpty(t, token)
 
 	require.NotZero(t, payload.ID)
-	require.Equal(t, username, payload.Username)
+	require.Equal(t, username, *payload.Username)
 	require.Equal(t, int64(userId), payload.UserId)
-	require.WithinDuration(t, issuedAt, payload.IssuedAt, time.Second)
-	require.WithinDuration(t, expiredAt, payload.ExpiredAt, time.Second)
+	require.WithinDuration(t, issuedAt, *payload.IssuedAt, time.Second)
+	require.WithinDuration(t, expiredAt, *payload.ExpiredAt, time.Second)
+}
+
+func TestJWTRefreshMaker(t *testing.T) {
+	maker, err := NewJWTMaker("qwertyuiopasdfghjklzxcvbnmqwerty", "qwertyuiopasdfghjklzxcvbnmqwerkl")
+	require.NoError(t, err)
+
+	userId := 1
+	token, err := maker.CreateRefreshToken(int64(userId))
+	require.NoError(t, err)
+	require.NotEmpty(t, token)
+
+	payload, err := maker.VerifyRefreshToken(token)
+	require.NoError(t, err)
+	require.NotEmpty(t, token)
+
+	require.NotZero(t, payload.ID)
+	require.Equal(t, int64(userId), payload.UserId)
 }

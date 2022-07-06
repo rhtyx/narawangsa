@@ -30,7 +30,7 @@ func (h *handler) Update(ctx *gin.Context) {
 		Name:      req.Name,
 		Email:     req.Email,
 		UpdatedAt: time.Now(),
-		Username:  authPayload.Username,
+		Username:  *authPayload.Username,
 	}
 
 	user, err := h.service.UpdateUser(ctx, arg)

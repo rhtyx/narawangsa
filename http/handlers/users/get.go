@@ -22,7 +22,7 @@ type userResponse struct {
 func (h *handler) Get(ctx *gin.Context) {
 	authPayload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
 
-	user, err := h.service.GetUser(ctx, authPayload.Username)
+	user, err := h.service.GetUser(ctx, *authPayload.Username)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))

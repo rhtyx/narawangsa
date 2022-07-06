@@ -12,9 +12,8 @@ import (
 
 func (h *handler) Delete(ctx *gin.Context) {
 	authPayload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
-	err := h.service.DeleteUser(ctx, authPayload.Username)
+	err := h.service.DeleteUser(ctx, *authPayload.Username)
 	if err != nil {
-		// TODO: Error if the row that has been deleted still return no error
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, lib.ErrorResponse(err))
 			return
