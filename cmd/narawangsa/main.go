@@ -17,7 +17,7 @@ func main() {
 		log.Fatal("cannot load config: ", err)
 	}
 
-	tokenMaker, err := token.NewJWTMaker(config.SecretKey)
+	tokenMaker, err := token.NewJWTMaker(config.SecretKey, config.SecretRefreshKey)
 	if err != nil {
 		log.Fatal("cannot create tokenMaker: ", err)
 	}

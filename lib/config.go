@@ -11,6 +11,7 @@ type Config struct {
 	DBSource             string        `mapstructure:"DB_SOURCE"`
 	ServerAddress        string        `mapstructure:"SERVER_ADDRESS"`
 	SecretKey            string        `mapstructure:"SECRET_KEY"`
+	SecretRefreshKey     string        `mapstructure:"SECRET_REFRESH_KEY"`
 	AccessTokenDuration  time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
 	RefreshTokenDuration time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
 }
