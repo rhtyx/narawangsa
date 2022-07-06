@@ -58,6 +58,11 @@ CREATE TABLE "book_lists" (
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );
 
+CREATE TABLE "authentications" (
+  "id" bigserial PRIMARY KEY,
+  "refresh_token" text UNIQUE NOT NULL
+);
+
 CREATE INDEX ON "users" ("username");
 
 CREATE INDEX ON "user_levels" ("user_id");
@@ -69,6 +74,8 @@ CREATE INDEX ON "books" ("author");
 CREATE INDEX ON "read_confirmations" ("book_list_id");
 
 CREATE INDEX ON "book_lists" ("user_id");
+
+CREATE INDEX ON "authentications" ("refresh_token");
 
 ALTER TABLE "user_levels" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
 
