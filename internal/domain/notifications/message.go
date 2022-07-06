@@ -1,7 +1,7 @@
 package notifications
 
-type Message struct {
-	Name    string `json:"name"`
-	Email   string `json:"email"`
-	Message string `json:"message"`
+type message struct {
+	name    string
+	email   string
+	message string
 }
